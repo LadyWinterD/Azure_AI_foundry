@@ -1,0 +1,23 @@
+{
+  "name": "Azure AI Foundry",
+  "image": "mcr.microsoft.com/devcontainers/python:3.9",
+  "features": {
+    "azure-cli": "latest"
+  },
+  "postCreateCommand": "pip install -r requirements.txt && az login --use-device-code",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "remoteEnv": {
+    "AZURE_API_KEY": "${{ secrets.AZURE_API_KEY }}",
+    "AZURE_MODEL_NAME": "${{ secrets.AZURE_MODEL_NAME }}"
+  }
+}
