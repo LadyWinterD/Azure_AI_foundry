@@ -1,3 +1,4 @@
+import chainlit as cl
 from azure.ai.projects import AIProjectClient
 from azure.ai.inference.models import SystemMessage, UserMessage, AssistantMessage
 from azure.identity import DefaultAzureCredential
@@ -10,42 +11,34 @@ load_dotenv()
 project_connection_string = os.getenv("AZURE_API_KEY")
 model_deployment = os.getenv("AZURE_MODEL_NAME")
 
-try:
-    if not project_connection_string:
-        raise ValueError("Missing AZURE_API_KEY in .env")
-    if not model_deployment:
-        raise ValueError("Missing AZURE_MODEL_NAME in .env")
+# Initialize project client outside the handler
+if not project_connection_string:
+    raise ValueError("Missing AZURE_API_KEY in .env")
+if not model_deployment:
+    raise ValueError("Missing AZURE_MODEL_NAME in .env")
 
-    # Create project client
-    project_client = AIProjectClient.from_connection_string(
-        credential=DefaultAzureCredential(),
-        conn_str=project_connection_string,
-    )
+project_client = AIProjectClient.from_connection_string(
+    credential=DefaultAzureCredential(),
+    conn_str=project_connection_string,
+)
 
-    # Get OpenAI chat client
-    openai_client = project_client.inference.get_chat_completions_client()
+openai_client = project_client.inference.get_chat_completions_client()
 
-    # Get user input
-    input_text = input("Enter a question: ")
+@cl.on_message
+async def main(message: cl.Message):
+    try:
+        prompt = [
+            SystemMessage("You are a helpful AI assistant that answers questions."),
+            UserMessage(message.content)
+        ]
 
-    # Create chat history
-    prompt = [
-        SystemMessage("You are a helpful AI assistant that answers questions."),
-        UserMessage(input_text)
-    ]
+        response = openai_client.complete(
+            model=model_deployment,
+            messages=prompt
+        )
 
-    # Call chat model
-    response = openai_client.complete(
-        model=model_deployment,
-        messages=prompt
-    )
+        reply = response.choices[0].message.content
+        await cl.Message(content=reply).send()
 
-    # Get and display result
-    completion = response.choices[0].message.content
-    print(completion)
-
-    # Optionally track the assistant message
-    prompt.append(AssistantMessage(completion))
-
-except Exception as ex:
-    print("Error:", ex)
+    except Exception as ex:
+        await cl.Message(content=f"Error: {str(ex)}").send()
