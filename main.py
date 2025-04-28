@@ -1,44 +1,56 @@
-import chainlit as cl
-from azure.ai.projects import AIProjectClient
-from azure.ai.inference.models import SystemMessage, UserMessage, AssistantMessage
-from azure.identity import DefaultAzureCredential
-from dotenv import load_dotenv
 import os
+from openai import AzureOpenAI
+from dotenv import load_dotenv
+import chainlit as cl
 
-# Load environment variables
 load_dotenv()
 
-project_connection_string = os.getenv("AZURE_API_KEY")
-model_deployment = os.getenv("AZURE_MODEL_NAME")
+subscription_key = os.getenv("AZURE_API_KEY")
+endpoint = os.getenv("AZURE_ENDPOINT")
+model_name = "gpt-4o-mini"
+deployment = "gpt-4o-mini"
+api_version = "2025-01-01-preview"
 
-# Initialize project client outside the handler
-if not project_connection_string:
-    raise ValueError("Missing AZURE_API_KEY in .env")
-if not model_deployment:
-    raise ValueError("Missing AZURE_MODEL_NAME in .env")
-
-project_client = AIProjectClient.from_connection_string(
-    credential=DefaultAzureCredential(),
-    conn_str=project_connection_string,
+client = AzureOpenAI(
+    api_version=api_version,
+    azure_endpoint=endpoint,
+    api_key=subscription_key,
 )
-
-openai_client = project_client.inference.get_chat_completions_client()
+cl.config.title = "AI Assistant"
+cl.config.description = "Welcome to your AI assistant powered by Azure OpenAI!"
 
 @cl.on_message
 async def main(message: cl.Message):
     try:
+      
         prompt = [
-            SystemMessage("You are a helpful AI assistant that answers questions."),
-            UserMessage(message.content)
+            {
+                "role": "system",
+                "content": "You are a helpful assistant.",
+            },
+            {
+                "role": "user",
+                "content": message.content,
+            },
+            {
+                "role": "assistant",
+                "content": "Sure! How can I assist you today?",
+            }
         ]
 
-        response = openai_client.complete(
-            model=model_deployment,
-            messages=prompt
+
+        response = client.chat.completions.create(
+            messages=prompt,
+            max_tokens=4096,
+            temperature=1.0,
+            top_p=1.0,
+            model=model_name
         )
+
 
         reply = response.choices[0].message.content
         await cl.Message(content=reply).send()
 
     except Exception as ex:
+        # Handle the error and send a message to the user
         await cl.Message(content=f"Error: {str(ex)}").send()

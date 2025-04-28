@@ -1,0 +1,36 @@
+{
+    "custom_fonts": [
+        "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap",
+        "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    ],
+    "variables": {
+        "light": {
+            "--font-sans": "'Roboto', sans-serif",  
+            "--background": "0 0% 95%",  
+            "--foreground": "0 0% 10%", 
+            "--primary": "120 60% 50%", 
+            "--primary-foreground": "0 0% 100%", 
+            "--secondary": "210 40% 96.1%",
+            "--secondary-foreground": "222.2 47.4% 11.2%",
+            "--muted": "0 0% 90%",
+            "--muted-foreground": "0 0% 36%",
+            "--input": "0 0% 100%",
+            "--ring": "120 60% 50%",
+            "--radius": "0.5rem"
+        },
+        "dark": {
+            "--font-sans": "'Roboto', sans-serif",
+            "--background": "0 0% 10%",  
+            "--foreground": "0 0% 90%", 
+            "--primary": "120 60% 50%",  
+            "--primary-foreground": "0 0% 100%", 
+            "--secondary": "0 0% 19%",
+            "--secondary-foreground": "210 40% 98%",
+            "--muted": "0 1% 26%",
+            "--muted-foreground": "0 0% 71%",
+            "--input": "0 0% 20%",
+            "--ring": "120 60% 50%",
+            "--radius": "0.5rem"
+        }
+    }
+}

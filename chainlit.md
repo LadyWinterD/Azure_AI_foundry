@@ -1,14 +1,12 @@
-# Welcome to Chainlit! 🚀🤖
 
-Hi there, Developer! 👋 We're excited to have you on board. Chainlit is a powerful tool designed to help you prototype, debug and share applications built on top of LLMs.
 
-## Useful Links 🔗
+# Welcome to Your AI Assistant!
 
-- **Documentation:** Get started with our comprehensive [Chainlit Documentation](https://docs.chainlit.io) 📚
-- **Discord Community:** Join our friendly [Chainlit Discord](https://discord.gg/k73SQ3FyUh) to ask questions, share your projects, and connect with other developers! 💬
+This application is powered by **Azure OpenAI** and designed to assist you with various tasks.
 
-We can't wait to see what you create with Chainlit! Happy coding! 💻😊
+## Features:
+- **Model**: gpt-4o-mini
+- **API Version**: 2025-01-01-preview
+- **Deployment**: gpt-4o-mini
 
-## Welcome screen
-
-To modify the welcome screen, edit the `chainlit.md` file at the root of your project. If you do not want a welcome screen, just leave this file empty.
+Feel free to ask any questions or provide input in the chat below. Your assistant is here to help!
