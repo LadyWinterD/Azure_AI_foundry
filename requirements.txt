@@ -1,20 +1,14 @@
-# Azure SDKs
-azure-ai-textanalytics
-azure-ai-projects
-azure-identity
+chainlit>=0.7.0
+mcp
+langchain
+langchain-mcp-adapters
+pyngrok
+pillow
+requests
+numpy
+pandas
+sentence-transformers
+scikit-learn
 azure-ai-inference
-azure-cli
-
-# Environment variable management
-python-dotenv
-
-# OpenAI and Chainlit
-openai
-chainlit
-
-# Dependencies for the Floor Plan Generator
-torch
-diffusers==0.28.0  # Replace with a stable version if needed
-accelerate==0.30.0
-datasets==2.19.1
-Pillow  # For image processing
+azure-core
+nest_asyncio
